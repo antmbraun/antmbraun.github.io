@@ -4,14 +4,44 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Anthony Braun — Resume</title>
-<meta name="description" content="Resume of Anthony Braun, full stack web developer.">
+<meta name="description" content="Anthony Braun: growth engineer and full stack web developer.">
+<meta name="color-scheme" content="light dark">
+<script>
+  // Apply a saved theme choice before first paint; otherwise CSS follows the system setting.
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
 <style>
   :root {
+    color-scheme: light;
+    --bg: #fff;
     --ink: #1f2328;
     --muted: #57606a;
     --accent: #0b5cad;
-    --rule: #d8dee4;
     --side: #f3f4f6;
+    --border: #d0d7de;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0d1117;
+      --ink: #e6edf3;
+      --muted: #9198a1;
+      --accent: #4493f8;
+      --side: #161b22;
+      --border: #30363d;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0d1117;
+    --ink: #e6edf3;
+    --muted: #9198a1;
+    --accent: #4493f8;
+    --side: #161b22;
+    --border: #30363d;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
@@ -19,20 +49,20 @@
     margin: 0;
     font: 15.5px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: var(--ink);
-    background: #fff;
+    background: var(--bg);
   }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  .page { max-width: 960px; margin: 0 auto; padding: 48px 24px 64px; }
+  .page { max-width: 980px; margin: 0 auto; padding: 48px 24px 64px; }
 
   header { text-align: center; margin-bottom: 36px; }
   header h1 { font-size: 2.6rem; font-weight: 400; letter-spacing: .01em; margin: 0 0 12px; }
-  header p { max-width: 680px; margin: 0 auto; color: var(--muted); }
+  header p { max-width: 720px; margin: 0 auto; color: var(--muted); }
 
-  .grid { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: start; }
+  .grid { display: grid; grid-template-columns: 290px 1fr; gap: 40px; align-items: start; }
 
   aside { background: var(--side); padding: 28px 24px; border-radius: 6px; }
-  aside .contact { text-align: center; margin-bottom: 8px; }
+  aside .contact { text-align: center; }
   aside .contact a { display: block; overflow-wrap: anywhere; }
 
   h2 {
@@ -41,11 +71,17 @@
   }
   aside h2 { text-align: center; }
   main > h2:first-child { margin-top: 0; }
+  main > h2 { margin-top: 36px; }
   h3 { font-size: 1.05rem; margin: 16px 0 4px; }
 
   ul { margin: 0; padding-left: 1.1em; }
   li { margin: 0 0 6px; }
   li::marker { color: var(--muted); }
+
+  .skills { margin: 0; }
+  .skills dt { font-weight: 600; font-size: .9rem; margin-top: 10px; }
+  .skills dt:first-child { margin-top: 0; }
+  .skills dd { margin: 2px 0 0; }
 
   .job { margin-bottom: 32px; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
@@ -54,6 +90,35 @@
   .role { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .role .title { font-style: italic; }
   .dates { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .sub { color: var(--muted); margin: 18px 0 8px; font-size: .9rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+
+  .projects li strong { font-weight: 600; }
+
+  .toolbar {
+    position: fixed; top: 16px; right: 16px; z-index: 10;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .pdf-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 40px; padding: 0 14px;
+    border: 1px solid var(--border); border-radius: 20px;
+    background: var(--side); color: var(--ink); font-size: .9rem; font-weight: 500;
+  }
+  .pdf-link:hover { border-color: var(--muted); text-decoration: none; }
+  .pdf-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pdf-link svg { width: 16px; height: 16px; }
+  .theme-toggle {
+    display: grid; place-items: center;
+    width: 40px; height: 40px; padding: 0;
+    border: 1px solid var(--border); border-radius: 50%;
+    background: var(--side); color: var(--ink); cursor: pointer;
+  }
+  .theme-toggle:hover { border-color: var(--muted); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle svg { width: 20px; height: 20px; }
+  .theme-toggle .sun { display: none; }
+  .theme-toggle[aria-pressed="true"] .sun { display: block; }
+  .theme-toggle[aria-pressed="true"] .moon { display: none; }
 
   .footer-links { margin-top: 40px; text-align: center; font-size: .9rem; color: var(--muted); }
 
@@ -66,21 +131,51 @@
   }
 
   @media print {
-    @page { margin: 0.5in; }
-    body { font-size: 10.5pt; }
+    @page { size: letter; margin: 0.45in 0.5in; }
+    :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+      color-scheme: light;
+      --bg: #fff; --ink: #1f2328; --muted: #57606a; --accent: #0b5cad; --side: #f3f4f6; --border: #d0d7de;
+    }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .toolbar, .footer-links { display: none; }
+    body { font-size: 9.4pt; line-height: 1.42; }
     .page { padding: 0; max-width: none; }
-    a { color: var(--ink); }
-    aside { border-radius: 0; }
-    .job, li { break-inside: avoid; }
-    .footer-links { display: none; }
+    header { margin-bottom: 16px; }
+    header h1 { font-size: 24pt; margin-bottom: 6px; }
+    header p { max-width: none; }
+    .grid { grid-template-columns: 2.15in 1fr; gap: 0.28in; }
+    main, aside { order: 0; }
+    aside { padding: 14px 14px; border-radius: 4px; }
+    h2 { font-size: 8.8pt; margin: 16px 0 6px; }
+    main > h2 { margin-top: 18px; }
+    h3 { margin: 10px 0 2px; }
+    li { margin-bottom: 3px; }
+    .skills dt { margin-top: 6px; font-size: 9pt; }
+    aside h3 { font-size: 10pt; }
+    .job { margin-bottom: 14px; }
+    .job-head h3 { font-size: 13pt; }
+    .roles { margin: 4px 0 8px; }
+    .sub { margin: 10px 0 4px; font-size: 8.5pt; }
+    .job, li, .skills dd, .keep { break-inside: avoid; }
+    h2, h3, .sub, .job-head, .roles { break-after: avoid; }
   }
 </style>
 </head>
 <body>
+<div class="toolbar">
+<a class="pdf-link" href="Anthony_Braun_resume.pdf" download>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+  PDF
+</a>
+<button class="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" title="Toggle dark mode">
+  <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+</button>
+</div>
 <div class="page">
   <header>
     <h1>Anthony Braun</h1>
-    <p>Full stack web developer with over a decade of experience and a proven track record building complex websites for large organizations, including the Smithsonian, U.S. Army, as well as the private sector. Passionate about solving difficult problems and building delightful, impactful products.</p>
+    <p>Full stack growth engineer with 10+ years of experience. I lead web engineering for Mindbody’s B2B acquisition funnel, building and testing the pages that turn visitors into sales leads. I use AI to speed up experimentation and developer workflows. Previously at the Smithsonian and U.S. Army.</p>
   </header>
 
   <div class="grid">
@@ -93,30 +188,46 @@
       </div>
 
       <h2>Skills</h2>
-      <p>JavaScript, React, PHP, SASS/SCSS, Twig, Python, Drupal, Git, Playwright, Behat, Composer, PatternLab, Tealium, Optimizely, CircleCI, GitHub Actions, Figma, Braze, Cursor, New Relic, Google Analytics 360</p>
+      <dl class="skills">
+        <dt>Frontend</dt>
+        <dd>JavaScript, React, HTML/CSS, SASS/SCSS, Twig, accessibility (WCAG)</dd>
+        <dt>Backend &amp; platform</dt>
+        <dd>PHP, Python, Drupal, REST APIs &amp; webhooks, Composer, Pantheon</dd>
+        <dt>Growth &amp; analytics</dt>
+        <dd>A/B testing (Optimizely), Tealium, Google Analytics 360, Marketo, New Relic, Core Web Vitals, SEO &amp; structured data</dd>
+        <dt>Testing &amp; CI/CD</dt>
+        <dd>Playwright, GitHub Actions, Behat</dd>
+        <dt>AI</dt>
+        <dd>Claude Code, Claude API, MCP, Cursor</dd>
+        <dt>Design</dt>
+        <dd>Figma, Pattern Lab</dd>
+      </dl>
 
       <h2>Education</h2>
       <h3>University of Virginia</h3>
       <ul>
         <li>BA with distinction</li>
-        <li>Double major: (1) Economics and (2) Political Philosophy, Policy, and Law</li>
-        <li>GPA 3.42</li>
+        <li>Double major: Economics; Political Philosophy, Policy, and Law</li>
       </ul>
       <h3>Udacity (online)</h3>
       <ul>
         <li>React nanodegree</li>
       </ul>
 
-      <h2>Leadership</h2>
-      <ul>
-        <li>Coach aspiring software engineers in Mindbody mentoring program.</li>
-        <li>Completed Mindbody “Emerging Leaders” program, including training on job coaching, effective meeting management, presentation skills and managing change.</li>
-        <li>Have led teams of up to four people.</li>
-      </ul>
+      <section class="keep">
+        <h2>Leadership</h2>
+        <ul>
+          <li>Coach aspiring software engineers in Mindbody’s mentoring program.</li>
+          <li>Interview candidates, and onboard and mentor new engineers.</li>
+          <li>Completed Mindbody’s “Emerging Leaders” program: job coaching, meeting management, presenting, and managing change.</li>
+          <li>Former editor of the Mindbody Engineering Blog.</li>
+          <li>Have led teams of up to four people.</li>
+        </ul>
+      </section>
     </aside>
 
     <main>
-      <h2>Relevant Experience</h2>
+      <h2>Experience</h2>
 
       <section class="job">
         <div class="job-head"><h3>Mindbody</h3></div>
@@ -126,19 +237,24 @@
           <div class="role"><span class="title">Software Engineer III</span><span class="dates">Feb. 2020 – Feb. 2023</span></div>
           <div class="role"><span class="title">Software Engineer II</span><span class="dates">Sep. 2018 – Feb. 2020</span></div>
         </div>
+
+        <p class="sub">Growth</p>
         <ul>
-          <li>Work with a team of engineers providing full stack web development for Mindbody growth marketing.</li>
-          <li>Technical lead on building and maintaining B2B marketing website, the primary lead generator for $268M/year business.</li>
-          <li>Helped increase CVR by 17%, MQLs by 22%, and closed-wons by 38% (2025 vs 2024).</li>
+          <li>Technical lead for the <a href="https://www.mindbodyonline.com">Mindbody</a> and <a href="https://www.booker.com">Booker</a> marketing sites, the primary lead generators for a $300M/year business. Also build and maintain the <a href="https://www.playlist.com">Playlist</a> corporate site.</li>
+          <li>Part of the growth marketing team that increased site conversion rate 17%, MQLs 22%, and closed-won deals 38% (2025 vs. 2024).</li>
           <li>Create conversion rate optimization A/B experiments using Optimizely, including variation development and experiment configuration, monitoring and reporting.</li>
-          <li>Led development of Mindbody web patterns library, a component-based system that allows non-technical users to create custom web pages.</li>
-          <li>Built custom company job board (Greenhouse API integration).</li>
-          <li>Set up continuous integration and automated testing using GitHub Actions and Playwright.</li>
-          <li>Incorporate SEO, security, privacy, performance, UX, accessibility and analytics into all tasks.</li>
-          <li>Point of contact for CMS technical support.</li>
-          <li>Completed Mindbody leadership development program, including training on job coaching, effective meeting management, presentation skills, and managing change.</li>
-          <li>Coach aspiring software engineers in Mindbody mentoring program.</li>
-          <li>Assist with hiring process (conduct interviews, onboarding and mentoring new team members).</li>
+          <li>Instrument the lead funnel end to end, with form and click events in Tealium that feed attribution and lead routing.</li>
+          <li>Led a page-speed and caching push. Removed jQuery from 90% of pages, fixed layout shifts in the navigation and lead forms, and made ad-tagged and geo-priced pages cacheable. Results: page load (LCP) 21% faster, responsiveness (INP) 18% better, layout shift (CLS) down 93%, and CDN cache hit rate up from 84% to 91%.</li>
+          <li>Built the technical side of Mindbody’s AI search (AEO) program: schema.org structured data, IndexNow, and AI-friendly content features. From January to November 2026, Mindbody’s visibility in AI answers rose from 57% to 83%, and it now ranks first in 55% of them, up from 22%.</li>
+        </ul>
+
+        <p class="sub">Platform &amp; developer tooling</p>
+        <ul>
+          <li>Built an automated Claude code review that runs on pull requests in 4 repos. It reviewed 190 PRs in its first 8 weeks, using three parallel review passes and a final pass that verifies and ranks findings. Each repo’s review playbook records the team’s fixes and accepted decisions, so the reviewer learns the codebase’s conventions and stops repeating false positives.</li>
+          <li>Built shared CI/CD for 4 sites with GitHub Actions: a preview environment for every PR, parallel Playwright test runs, nightly dependency updates that flag security fixes, and a PR dashboard with Slack digests.</li>
+          <li>Led development of Mindbody’s <a href="https://mindbody.github.io/mktg-web-patterns/">web pattern library</a>, a component system that lets non-technical marketers build their own pages, including accessible tables, carousels, and stat components.</li>
+          <li>Rebuilt the careers site’s job board on the Ashby API, with webhook-driven job syncing, Google job-posting data, and Slack alerts when the feed breaks.</li>
+          <li>Merged 358 pull requests in the last 12 months.</li>
         </ul>
       </section>
 
@@ -148,18 +264,43 @@
           <div class="role"><span class="title">Web Technical Manager, Smithsonian’s National Zoo &amp; Conservation Biology Institute</span></div>
         </div>
         <ul>
-          <li>Technical lead on project to build official National Zoo website.</li>
-          <li>Built first Smithsonian website to comply with WCAG 2.0 AA standard.</li>
-          <li>Developed Drupal <a href="https://github.com/Smithsonian/si_publications">module</a> that integrates with Smithsonian Libraries to automatically populate Smithsonian units’ scientific publications.</li>
-          <li>Built visitor access system for Smithsonian Conservation Biology Institute using Drupal.</li>
-          <li>Built daily reporting system for animal care staff.</li>
-          <li>Built collaborative system for tracking Smithsonian Conservation Biology Institute’s strategic goals.</li>
+          <li>Technical lead on the project to build the official National Zoo website.</li>
+          <li>Built the first Smithsonian website to comply with the WCAG 2.0 AA accessibility standard.</li>
+          <li>Developed a Drupal <a href="https://github.com/Smithsonian/si_publications">module</a> that integrates with Smithsonian Libraries to automatically publish Smithsonian units’ scientific publications.</li>
+          <li>Built a visitor access system, a daily reporting system for animal care staff, and a collaborative system for tracking the institute’s strategic goals, all in Drupal.</li>
         </ul>
       </section>
+
+      <h2>Projects</h2>
+      <ul class="projects">
+        <li><strong><a href="https://antmbraun.github.io/clay/">Clay</a></strong>: a personal context and permissions layer for AI agents, served over MCP. It syncs my Gmail into a local searchable log, lets agents query it read-only, and records every tool call in an audit log. Python, SQLite.</li>
+        <li><strong><a href="https://github.com/antmbraun/NextGen-BioAgents-Hackathon-2026">FDA 510(k) Submission Assistant</a></strong> (NextGen BioAgents Hackathon 2026, 3rd place, $400 prize): an LLM drafting assistant that turns a medical device company’s notes and specs into a draft FDA submission, with gap analysis, predicate device recommendations, and anticipated reviewer questions.</li>
+        <li><strong><a href="https://www.drupal.org/project/scriptfilter">Script Embed Filter</a></strong>: a contributed Drupal module on drupal.org.</li>
+      </ul>
     </main>
   </div>
 
   <p class="footer-links"><a href="../">← antmbraun.github.io</a></p>
 </div>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.querySelector(".theme-toggle");
+    var system = window.matchMedia("(prefers-color-scheme: dark)");
+    function isDark() {
+      return root.dataset.theme ? root.dataset.theme === "dark" : system.matches;
+    }
+    function sync() { btn.setAttribute("aria-pressed", String(isDark())); }
+    btn.addEventListener("click", function () {
+      var next = isDark() ? "light" : "dark";
+      root.dataset.theme = next;
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      sync();
+    });
+    // With no saved choice, follow system changes live.
+    system.addEventListener("change", sync);
+    sync();
+  })();
+</script>
 </body>
 </html>
